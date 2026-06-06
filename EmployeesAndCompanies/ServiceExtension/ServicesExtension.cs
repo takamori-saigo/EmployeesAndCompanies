@@ -1,4 +1,9 @@
 
+using Contracts;
+using LoggerService;
+using NLog;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
+
 namespace EmployeesAndCompanies.ServiceExtension;
 
 public static class ServicesExtension
@@ -15,5 +20,10 @@ public static class ServicesExtension
         {
             
         });
+    }
+    
+    public static void ConfigureLoggerService(this IServiceCollection services)
+    {
+        services.AddSingleton<ILoggerManager, LoggerManager>();
     }
 }
