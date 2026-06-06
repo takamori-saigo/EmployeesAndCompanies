@@ -32,7 +32,12 @@ public static class ServicesExtension
 
     public static void ConfigureSqlService(this IServiceCollection services, string connectionString)
     {
-        services.AddDbContext<RepositoryContext>(option =>
-            option.UseSqlServer(connectionString));
+        services.AddDbContext<Repository.RepositoryContext>(option =>
+            option.UseNpgsql(connectionString));
+    }
+
+    public static void ConfigureRepositoryManager(this IServiceCollection services)
+    {
+        services.AddScoped<IManagerRepository, ManagerRepository>();
     }
 }
