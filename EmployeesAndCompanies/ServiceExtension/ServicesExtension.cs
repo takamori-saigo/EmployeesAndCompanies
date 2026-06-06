@@ -1,7 +1,10 @@
 
+using System.Runtime.InteropServices.ComTypes;
 using Contracts;
 using LoggerService;
+using Microsoft.EntityFrameworkCore;
 using NLog;
+using Repository;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace EmployeesAndCompanies.ServiceExtension;
@@ -25,5 +28,11 @@ public static class ServicesExtension
     public static void ConfigureLoggerService(this IServiceCollection services)
     {
         services.AddSingleton<ILoggerManager, LoggerManager>();
+    }
+
+    public static void ConfigureSqlService(this IServiceCollection services, string connectionString)
+    {
+        services.AddDbContext<RepositoryContext>(option =>
+            option.UseSqlServer(connectionString));
     }
 }
