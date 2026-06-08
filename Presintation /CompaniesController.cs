@@ -1,3 +1,4 @@
+using Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 
@@ -8,23 +9,19 @@ namespace Presintation;
 public class CompaniesController: ControllerBase
 {
     private readonly IServiceManager _serviceManager;
-
-    public CompaniesController(IServiceManager serviceManager)
+    private readonly ILoggerManager _logger;
+    public CompaniesController(IServiceManager serviceManager, ILoggerManager logger)
     {
         _serviceManager = serviceManager;
+        _logger = logger;
     }
     
     [HttpGet]
     public IActionResult GetCompanies()
     {
-        try
-        {
-            var companies = _serviceManager.CompanyService.GetAllCompanies(false);
-            return Ok(companies);
-        }
-        catch
-        {
-            return StatusCode(500, "Internal server error");
-        }
+        throw new NotImplementedException();
+        var companies = _serviceManager.CompanyService.GetAllCompanies(false);
+        _logger.LogInfo("Companies retrieved");
+        return Ok(companies);
     }
 }

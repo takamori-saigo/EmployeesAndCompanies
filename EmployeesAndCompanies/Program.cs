@@ -1,4 +1,5 @@
 using System.Reflection.Metadata;
+using Contracts;
 using EmployeesAndCompanies.ServiceExtension;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
@@ -16,6 +17,8 @@ builder.Services.ConfigureLoggerService();
 var app = builder.Build();
 if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
 else app.UseHsts();
+var logger = app.Services.GetRequiredService<ILoggerManager>();
+app.ConfigureExceptionHandler(logger);
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseForwardedHeaders(new ForwardedHeadersOptions
