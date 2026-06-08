@@ -1,6 +1,6 @@
 namespace Contracts;
 
-public interface IManagerRepository
+public interface IRepositoryManager
 {
     IEmployeeRepository Employee { get; }
     ICompanyRepository Company { get; }

@@ -5,6 +5,8 @@ using LoggerService;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Repository;
+using Service;
+using Service.Contracts;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace EmployeesAndCompanies.ServiceExtension;
@@ -38,6 +40,11 @@ public static class ServicesExtension
 
     public static void ConfigureRepositoryManager(this IServiceCollection services)
     {
-        services.AddScoped<IManagerRepository, ManagerRepository>();
+        services.AddScoped<IRepositoryManager, RepositoryManager>();
+    }
+
+    public static void ConfigureServiceManager(this IServiceCollection services)
+    {
+        services.AddScoped<IServiceManager, ServiceManager>();
     }
 }

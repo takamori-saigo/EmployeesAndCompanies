@@ -2,7 +2,7 @@ using Contracts;
 
 namespace Repository;
 
-public class ManagerRepository: IManagerRepository
+public class RepositoryManager: IRepositoryManager
 {
     private readonly Lazy<EmployeeRepository> _employee;
     private readonly Lazy<CompanyRepository> _company;
@@ -10,7 +10,7 @@ public class ManagerRepository: IManagerRepository
     public IEmployeeRepository Employee => _employee.Value;
     public ICompanyRepository Company => _company.Value;
 
-    public ManagerRepository(RepositoryContext repositoryContext)
+    public RepositoryManager(RepositoryContext repositoryContext)
     {
         _repositoryContext = repositoryContext;
         _employee = new Lazy<EmployeeRepository>(() => new EmployeeRepository(_repositoryContext));
