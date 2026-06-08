@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddApplicationPart(typeof(Presintation.AssemblyReference).Assembly);
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureSqlService(builder.Configuration.GetConnectionString("DefaultConnection"));
