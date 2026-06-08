@@ -1,9 +1,10 @@
+using System.Reflection.Metadata;
 using EmployeesAndCompanies.ServiceExtension;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddApplicationPart(typeof(Presintation.AssemblyReference).Assembly);
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 builder.Services.ConfigureRepositoryManager();
