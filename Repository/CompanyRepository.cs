@@ -10,4 +10,9 @@ internal sealed class CompanyRepository: RepositoryBase<Company>, ICompanyReposi
     {
         return FindALl(trackChanges).OrderBy(x => x.Name).ToList();
     }
+
+    public Company GetCompany(Guid companyId, bool trackChanges)
+    {
+        return FindByCondition(x => x.Id.Equals(companyId), trackChanges).SingleOrDefault();
+    }
 }

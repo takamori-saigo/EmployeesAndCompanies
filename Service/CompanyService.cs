@@ -24,4 +24,11 @@ internal sealed class CompanyService: ICompanyService
         var companiesDto = _mapper.Map<IEnumerable<CompanyDTO>>(companies);
         return companiesDto;
     }
+
+    public CompanyDTO GetCompany(Guid companyId, bool trackChanges)
+    {
+        var company = _repository.Company.GetCompany(companyId, trackChanges);
+        var compantDto =  _mapper.Map<CompanyDTO>(company);
+        return compantDto;
+    }
 }

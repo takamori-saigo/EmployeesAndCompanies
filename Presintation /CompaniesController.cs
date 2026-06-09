@@ -19,9 +19,15 @@ public class CompaniesController: ControllerBase
     [HttpGet]
     public IActionResult GetCompanies()
     {
-        throw new NotImplementedException();
         var companies = _serviceManager.CompanyService.GetAllCompanies(false);
         _logger.LogInfo("Companies retrieved");
         return Ok(companies);
+    }
+
+    [HttpGet("{companyId:guid}")]
+    public IActionResult GetCompany(Guid companyId)
+    {
+        var company = _serviceManager.CompanyService.GetCompany(companyId, false);
+        return Ok(company);
     }
 }
