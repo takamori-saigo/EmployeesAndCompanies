@@ -20,7 +20,6 @@ public class CompaniesController: ControllerBase
     public IActionResult GetCompanies()
     {
         var companies = _serviceManager.CompanyService.GetAllCompanies(false);
-        _logger.LogInfo("Companies retrieved");
         return Ok(companies);
     }
 

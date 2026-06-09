@@ -1,7 +1,7 @@
-using System.Net;
+using System.Text;
+using System.Text.Json;
 using Contracts;
-using Entities.ErrorModel;
-using Microsoft.AspNetCore.Diagnostics;
+using Entities.Exception;
 
 namespace EmployeesAndCompanies.ServiceExtension;
 
@@ -9,23 +9,28 @@ public static class ExceptionMiddlewareExtensions
 {
     public static void ConfigureExceptionHandler(this IApplicationBuilder app, ILoggerManager logger)
     {
-        app.UseExceptionHandler(appError =>
+        app.Use(async (context, next) =>
         {
-            appError.Run(async context =>
+            try
             {
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                await next();
+            }
+            catch (NotFoundException ex)
+            {
+                logger.LogError($"NotFoundException: {ex.Message}");
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
                 context.Response.ContentType = "application/json";
-                var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
-                if (contextFeature != null)
-                {
-                    logger.LogError($"Something went wrong: {contextFeature.Error}");
-                    await context.Response.WriteAsync(new ErrorDetails()
-                    {
-                        StatusCode = context.Response.StatusCode,
-                        Message = "Internal Server Error.",
-                    }.ToString());
-                }
-            });
+                var body = JsonSerializer.Serialize(new { StatusCode = 404, Message = "NotFound" });
+                await context.Response.WriteAsync(body, Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Exception: {ex}");
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                context.Response.ContentType = "application/json";
+                var body = JsonSerializer.Serialize(new { StatusCode = 500, Message = "Internal Server Error" });
+                await context.Response.WriteAsync(body, Encoding.UTF8);
+            }
         });
     }
 }
