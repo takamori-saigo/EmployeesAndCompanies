@@ -1,5 +1,6 @@
 using Contracts;
 using Entities;
+using Shared;
 
 namespace Repository;
 
@@ -14,5 +15,10 @@ internal sealed class CompanyRepository: RepositoryBase<Company>, ICompanyReposi
     public Company GetCompany(Guid companyId, bool trackChanges)
     {
         return FindByCondition(x => x.Id.Equals(companyId), trackChanges).SingleOrDefault();
+    }
+
+    public void CreateCompany(Company company)
+    {
+        Create(company);
     }
 }

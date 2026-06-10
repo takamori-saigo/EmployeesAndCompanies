@@ -3,6 +3,7 @@ using Contracts;
 using Entities;
 using Entities.Exception;
 using Service.Contracts;
+using Shared;
 using Shared.DataTransferObjects;
 
 namespace Service;
@@ -35,5 +36,14 @@ internal sealed class CompanyService: ICompanyService
         var compantDto =  _mapper.Map<CompanyDTO>(company);
         _logger.LogInfo("GetCompany");
         return compantDto;
+    }
+
+    public CompanyDTO CreateCompany(CompanyForCreationDto company)
+    {
+        var companyEntity = _mapper.Map<Company>(company);
+        _repository.Company.CreateCompany(companyEntity);
+        _repository.Save();
+        var companyForReturn =  _mapper.Map<CompanyDTO>(companyEntity);
+        return companyForReturn;
     }
 }

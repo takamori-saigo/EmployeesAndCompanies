@@ -1,11 +1,13 @@
 using Contracts;
+using Entities;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared;
 
 namespace Presintation;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
 public class CompaniesController: ControllerBase
 {
     private readonly IServiceManager _serviceManager;
@@ -23,10 +25,18 @@ public class CompaniesController: ControllerBase
         return Ok(companies);
     }
 
-    [HttpGet("{companyId:guid}")]
+    [HttpGet("{companyId:guid}", Name = "GetCompanyById")]
     public IActionResult GetCompany(Guid companyId)
     {
         var company = _serviceManager.CompanyService.GetCompany(companyId, false);
         return Ok(company);
+    }
+
+    [HttpPost]
+    public IActionResult CreateCompany([FromBody] CompanyForCreationDto company)
+    {
+        if (company == null) return BadRequest("Company is null");
+        var companyDto = _serviceManager.CompanyService.CreateCompany(company);
+        return CreatedAtRoute("GetCompanyById", new { companyId =  companyDto.Id }, companyDto);
     }
 }
