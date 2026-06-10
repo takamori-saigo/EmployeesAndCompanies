@@ -21,4 +21,9 @@ internal sealed class CompanyRepository: RepositoryBase<Company>, ICompanyReposi
     {
         Create(company);
     }
+
+    public IEnumerable<Company> GetByIds(IEnumerable<Guid> companyIds, bool trackChanges)
+    {
+        return FindByCondition(x => companyIds.Contains(x.Id), trackChanges).ToList();
+    }
 }

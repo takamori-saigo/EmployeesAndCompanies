@@ -33,10 +33,25 @@ public class CompaniesController: ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateCompany([FromBody] CompanyForCreationDto company)
+    public IActionResult CreateCompany(CompanyForCreationDto company)
     {
         if (company == null) return BadRequest("Company is null");
         var companyDto = _serviceManager.CompanyService.CreateCompany(company);
         return CreatedAtRoute("GetCompanyById", new { companyId =  companyDto.Id }, companyDto);
     }
+
+    [HttpGet("collection/({ids})", Name = "GetCompaniesByIds")]
+    public IActionResult GetCompaniesByIds([ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
+    {
+        var companies = _serviceManager.CompanyService.GetByIds(ids, false);
+        return Ok(companies);
+    }
+
+    [HttpPost("collection")]
+    public IActionResult CreateCompanyCollection([FromBody] IEnumerable<CompanyForCreationDto> companyCollection)
+    {
+        var result = _serviceManager.CompanyService.CreateCompanyCollection(companyCollection);
+        return CreatedAtRoute("GetCompaniesByIds", new { ids = result }, result);
+    }
+    
 }
