@@ -31,6 +31,13 @@ public class CompaniesController: ControllerBase
         var company = _serviceManager.CompanyService.GetCompany(companyId, false);
         return Ok(company);
     }
+    
+    [HttpDelete("{companyId:guid}")]
+    public IActionResult DeleteCompany(Guid companyId)
+    {
+        _serviceManager.CompanyService.DeleteCompany(companyId, false);
+        return NoContent();
+    }
 
     [HttpPost]
     public IActionResult CreateCompany(CompanyForCreationDto company)

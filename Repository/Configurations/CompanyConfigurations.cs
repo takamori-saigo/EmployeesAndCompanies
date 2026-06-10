@@ -9,6 +9,7 @@ public class CompanyConfigurations: IEntityTypeConfiguration<Company>
 {
     public void Configure(EntityTypeBuilder<Company> builder)
     {
+        
         builder.HasData
         (
             new Company
