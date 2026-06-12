@@ -3,6 +3,7 @@ using Entities;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared;
+using Shared.DataTransferObjects;
 
 namespace Presintation;
 
@@ -60,5 +61,13 @@ public class CompaniesController: ControllerBase
         var result = _serviceManager.CompanyService.CreateCompanyCollection(companyCollection);
         return CreatedAtRoute("GetCompaniesByIds", new { ids = result }, result);
     }
-    
+
+    [HttpPut("{companyId:guid}")]
+    public IActionResult UpdateCompany(Guid companyId, [FromBody]CompanyForUpdateDto company)
+    {
+        if (company == null) return BadRequest("CompanyForUpdate is null");
+        _serviceManager.CompanyService.UpdateCompany(companyId, company, true );
+        
+        return NoContent();
+    }
 }

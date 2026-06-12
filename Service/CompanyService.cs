@@ -79,4 +79,19 @@ internal sealed class CompanyService: ICompanyService
         _repository.Company.DeleteCompany(companyEntity);
         _repository.Save();
     }
+
+    public void UpdateCompany(Guid companyId, CompanyForUpdateDto companyForUpdatingDto, bool trackChanges)
+    {
+        var companyEntity = _repository.Company.GetCompany(companyId, trackChanges);
+        if (companyEntity == null) throw new CompanyNotFoundException(companyId);
+        _mapper.Map(companyForUpdatingDto, companyEntity);
+        companyEntity.Employees ??= new List<Employee>();
+        foreach (var empDto in companyForUpdatingDto.Employee)                                      
+        {                                                                                           
+            var newEmployee = _mapper.Map<Employee>(empDto);                                        
+            companyEntity.Employees.Add(newEmployee);                                               
+        }    
+        
+        _repository.Save();
+    }
 }

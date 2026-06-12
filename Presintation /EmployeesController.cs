@@ -6,10 +6,10 @@ namespace Presintation;
 
 [Route("api/companies/{companyId:guid}/employees")]
 [ApiController]
-public class EmployeesController: ControllerBase
+public class EmployeesController : ControllerBase
 {
     private readonly IServiceManager _service;
-    
+
     public EmployeesController(IServiceManager service)
     {
         _service = service;
@@ -31,17 +31,27 @@ public class EmployeesController: ControllerBase
     [HttpPost]
     public IActionResult CreateEmployee(Guid companyId, EmployeeForCreationDto employeeForCreationDto)
     {
-        if (employeeForCreationDto == null) 
+        if (employeeForCreationDto is null)
             return BadRequest("employeeForCreationDto object is null");
         var employeeToReturn =
             _service.EmployeeService.CreateEmployeeForCompany(companyId, employeeForCreationDto, false);
-        return CreatedAtRoute("GetEmployeesForCompany", new {companyId = companyId, employeeId = employeeToReturn.id},  employeeToReturn);
+        return CreatedAtRoute("GetEmployeesForCompany", new { companyId = companyId, employeeId = employeeToReturn.id },
+            employeeToReturn);
     }
 
     [HttpDelete("{id:guid}")]
     public IActionResult DeleteEmployeeForCompany(Guid companyId, Guid id)
     {
         _service.EmployeeService.DeleteEmployeeForCompany(companyId, id, false);
+        return NoContent();
+    }
+
+    [HttpPut("{id:guid}")]
+    public IActionResult UpdateEmployeeForCompany(Guid companyId, Guid id,
+        [FromBody] EmployeeForUpdatingDto employeeForUpdatingDto)
+    {
+        if (employeeForUpdatingDto is null) return BadRequest("EmployeeForCompany is null");
+        _service.EmployeeService.UpdateEmployeeForCompany(companyId, id, employeeForUpdatingDto, false, true);
         return NoContent();
     }
 }
