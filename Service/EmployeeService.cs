@@ -67,4 +67,21 @@ internal sealed class EmployeeService: IEmployeeService
         _mapper.Map(employeeForUpdatingDto, employeeEntity);
         _repository.Save();
     }
+
+    public (EmployeeForUpdatingDto employeeForUpdatingDto, Employee employee) GetEmployeeForPatch(Guid companyId, Guid id,
+        bool trackChanges, bool empTrackChanges)
+    {
+        var company = _repository.Company.GetCompany(companyId, trackChanges);
+        if (company == null) throw new CompanyNotFoundException(companyId);
+        var employeeEntity = _repository.Employee.GetEmployee(companyId, id, empTrackChanges);
+        if (employeeEntity == null) throw new EmployeeNotFoundException(id);
+        var employeeToPatch = _mapper.Map<EmployeeForUpdatingDto>(employeeEntity);
+        return (employeeToPatch, employeeEntity);
+    }
+
+    public void SaveChangesForPatch(EmployeeForUpdatingDto employeeToPatch, Employee employeeEntity)
+    {
+        _mapper.Map(employeeToPatch, employeeEntity);
+        _repository.Save();
+    }
 }

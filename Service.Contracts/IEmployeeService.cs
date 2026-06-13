@@ -11,4 +11,8 @@ public interface IEmployeeService
     void DeleteEmployeeForCompany(Guid companyId, Guid guid, bool trackChanges);
     void UpdateEmployeeForCompany(Guid companyId, Guid id, EmployeeForUpdatingDto employeeForUpdatingDto,
         bool compTrackChanges, bool empTackChanges);
+    (EmployeeForUpdatingDto employeeForUpdatingDto, Employee employee)
+        GetEmployeeForPatch(Guid companyId, Guid id, bool trackChanges, bool empTrackChanges);
+
+    void SaveChangesForPatch(EmployeeForUpdatingDto employeeToPatch, Employee employeeEntity);
 }
