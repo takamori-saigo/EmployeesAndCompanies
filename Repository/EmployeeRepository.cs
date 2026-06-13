@@ -1,5 +1,6 @@
 using Contracts;
 using Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository;
 
@@ -9,25 +10,27 @@ public class EmployeeRepository : RepositoryBase<Employee>, IEmployeeRepository
     {
     }
 
-    public IEnumerable<Employee> GetEmployees(Guid companyId, bool trackChanges)
+    public async Task<IEnumerable<Employee>> GetEmployeesAsync(Guid companyId, bool trackChanges)
     {
-        return FindByCondition(e => e.CompanyId.Equals(companyId), trackChanges);
+        return await FindByCondition(e => e.CompanyId.Equals(companyId), trackChanges).ToListAsync();
     }
 
-    public Employee GetEmployee(Guid companyId, Guid employeeId, bool trackChanges)
+    public async Task<Employee> GetEmployeeAsync(Guid companyId, Guid employeeId, bool trackChanges)
     {
-        return FindByCondition(x => x.Id.Equals(employeeId) && x.CompanyId.Equals(companyId), trackChanges)
-            .SingleOrDefault();
+        return await FindByCondition(x => x.Id.Equals(employeeId) && x.CompanyId.Equals(companyId), trackChanges)
+            .SingleOrDefaultAsync();
     }
 
-    public void CreateEmployeeForCompany(Guid companyId, Employee employee)
+    public Task CreateEmployeeForCompanyAsync(Guid companyId, Employee employee)
     {
         employee.CompanyId = companyId;
         Create(employee);
+        return Task.CompletedTask;
     }
 
-    public void DeleteEmployee(Employee employee)
+    public Task DeleteEmployeeAsync(Employee employee)
     {
         Delete(employee);
+        return Task.CompletedTask;
     }
 }

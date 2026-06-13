@@ -1,5 +1,6 @@
 using Contracts;
 using Entities;
+using Microsoft.EntityFrameworkCore;
 using Shared;
 
 namespace Repository;
@@ -7,14 +8,14 @@ namespace Repository;
 internal sealed class CompanyRepository: RepositoryBase<Company>, ICompanyRepository
 {
     public CompanyRepository(RepositoryContext repositoryContext): base(repositoryContext){}
-    public IEnumerable<Company> GetCompanies(bool trackChanges)
+    public async Task<IEnumerable<Company>> GetCompaniesAsync(bool trackChanges)
     {
-        return FindALl(trackChanges).OrderBy(x => x.Name).ToList();
+        return await FindALl(trackChanges).OrderBy(x => x.Name).ToListAsync();
     }
 
-    public Company GetCompany(Guid companyId, bool trackChanges)
+    public async Task<Company> GetCompanyAsync(Guid companyId, bool trackChanges)
     {
-        return FindByCondition(x => x.Id.Equals(companyId), trackChanges).SingleOrDefault();
+        return await FindByCondition(x => x.Id.Equals(companyId), trackChanges).SingleOrDefaultAsync();
     }
 
     public void CreateCompany(Company company)
@@ -22,9 +23,9 @@ internal sealed class CompanyRepository: RepositoryBase<Company>, ICompanyReposi
         Create(company);
     }
 
-    public IEnumerable<Company> GetByIds(IEnumerable<Guid> companyIds, bool trackChanges)
+    public async Task<IEnumerable<Company>> GetByIdsAsync(IEnumerable<Guid> companyIds, bool trackChanges)
     {
-        return FindByCondition(x => companyIds.Contains(x.Id), trackChanges).ToList();
+        return await FindByCondition(x => companyIds.Contains(x.Id), trackChanges).ToListAsync();
     }
 
     public void DeleteCompany(Company company)
