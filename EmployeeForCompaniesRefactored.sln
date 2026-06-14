@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeForCompaniesRefactored", "EmployeeForCompaniesRefactored\EmployeeForCompaniesRefactored.csproj", "{EFB6230C-2CE2-4447-B32E-4E42A34EE2AA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFB6230C-2CE2-4447-B32E-4E42A34EE2AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFB6230C-2CE2-4447-B32E-4E42A34EE2AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFB6230C-2CE2-4447-B32E-4E42A34EE2AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFB6230C-2CE2-4447-B32E-4E42A34EE2AA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
