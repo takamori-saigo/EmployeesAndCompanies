@@ -1,8 +1,23 @@
 {
   "version": 2,
-  "dgSpecHash": "KhLcCl17MHg=",
+  "dgSpecHash": "rCgSFsV3oME=",
   "success": true,
   "projectFilePath": "/Users/gats/Desktop/projects/EmployeeForCompaniesRefactored/EmployeeForCompaniesRefactored/EmployeeForCompaniesRefactored.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/gats/.nuget/packages/microsoft.extensions.configuration.abstractions/8.0.0/microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
+    "/Users/gats/.nuget/packages/microsoft.extensions.dependencyinjection/8.0.0/microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "/Users/gats/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "/Users/gats/.nuget/packages/microsoft.extensions.diagnostics.abstractions/8.0.0/microsoft.extensions.diagnostics.abstractions.8.0.0.nupkg.sha512",
+    "/Users/gats/.nuget/packages/microsoft.extensions.fileproviders.abstractions/8.0.0/microsoft.extensions.fileproviders.abstractions.8.0.0.nupkg.sha512",
+    "/Users/gats/.nuget/packages/microsoft.extensions.hosting.abstractions/8.0.0/microsoft.extensions.hosting.abstractions.8.0.0.nupkg.sha512",
+    "/Users/gats/.nuget/packages/microsoft.extensions.logging/8.0.0/microsoft.extensions.logging.8.0.0.nupkg.sha512",
+    "/Users/gats/.nuget/packages/microsoft.extensions.logging.abstractions/8.0.0/microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "/Users/gats/.nuget/packages/microsoft.extensions.options/8.0.0/microsoft.extensions.options.8.0.0.nupkg.sha512",
+    "/Users/gats/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "/Users/gats/.nuget/packages/nlog/6.1.3/nlog.6.1.3.nupkg.sha512",
+    "/Users/gats/.nuget/packages/nlog.extensions.hosting/6.1.3/nlog.extensions.hosting.6.1.3.nupkg.sha512",
+    "/Users/gats/.nuget/packages/nlog.extensions.logging/6.1.3/nlog.extensions.logging.6.1.3.nupkg.sha512",
+    "/Users/gats/.nuget/packages/system.diagnostics.diagnosticsource/8.0.0/system.diagnostics.diagnosticsource.8.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
