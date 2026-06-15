@@ -1,0 +1,35 @@
+﻿using LoggerService;
+using NLog;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
+
+namespace Contracts;
+
+public class LoggerManager: ILoggerManager
+{
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+    public LoggerManager()
+    {
+        
+    }
+    
+    public void LogInfo(string message)
+    {
+        _logger.Info(message);
+    }
+
+    public void LogWarning(string message)
+    {
+        _logger.Warn(message);
+    }
+
+    public void LogError(string message)
+    {
+        _logger.Error(message);
+    }
+
+    public void LogDebug(string message)
+    {
+        _logger.Debug(message);
+    }
+}
