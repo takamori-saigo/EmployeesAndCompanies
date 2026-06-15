@@ -1,9 +1,12 @@
 using EmployeeForCompaniesRefactored.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 using NLog;
+using Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+builder.Services.AddConfigureSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 builder.Services.ConfigureLoggerService();
 builder.Services.AddControllers();
 builder.Services.ConfigureCors();

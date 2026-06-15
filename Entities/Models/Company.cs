@@ -6,7 +6,7 @@ namespace Entities;
 public class Company
 {
     [Column("CompanyId")]
-    public Guid CompanyId { get; set; }
+    public Guid Id { get; set; }
     [Required(ErrorMessage = "Company name is required")]
     [MaxLength(60, ErrorMessage = "Maximum length is 60 characters")]
     public string? Name { get; set; }
