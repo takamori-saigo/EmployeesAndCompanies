@@ -7,6 +7,7 @@ using Repository;
 var builder = WebApplication.CreateBuilder(args);
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 builder.Services.AddConfigureSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddConfigureRepositoryManager();
 builder.Services.ConfigureLoggerService();
 builder.Services.AddControllers();
 builder.Services.ConfigureCors();

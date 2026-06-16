@@ -30,4 +30,7 @@ public static class ServiceExtensions
     public static void AddConfigureSqlServer(this IServiceCollection services, string connectionString) =>
         services.AddDbContext<RepositoryContext>(opt =>
             opt.UseNpgsql(connectionString));
+    
+    public static void AddConfigureRepositoryManager(this IServiceCollection services) =>
+        services.AddScoped<IRepositoryManager, RepositoryManager>();
 }
