@@ -20,4 +20,11 @@ public class CompaniesController: ControllerBase
         var companies = _serviceManager.CompanyService.GetAllCompanies(false);
         return Ok(companies);
     }
+
+    [HttpGet("{companyId:guid}")]
+    public IActionResult GetCompany(Guid companyId)
+    {
+        var company = _serviceManager.CompanyService.GetCompany(companyId, false);
+        return Ok(company);
+    }
 }
