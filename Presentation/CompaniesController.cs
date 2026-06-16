@@ -1,3 +1,4 @@
+using Entities.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 
@@ -21,10 +22,12 @@ public class CompaniesController: ControllerBase
         return Ok(companies);
     }
 
-    [HttpGet("{companyId:guid}")]
-    public IActionResult GetCompany(Guid companyId)
+    [HttpGet("{id:guid}")]
+    public IActionResult GetCompany(Guid id)
     {
-        var company = _serviceManager.CompanyService.GetCompany(companyId, false);
+        var company = _serviceManager.CompanyService.GetCompany(id, false);
+        if (company == null) 
+            throw new CompanyNotFoundException(id);
         return Ok(company);
     }
 }
