@@ -2,6 +2,7 @@
 using Entities;
 using LoggerService;
 using Service.Contracts;
+using Shared;
 
 namespace Service;
 
@@ -16,12 +17,12 @@ internal sealed class CompanyService : ICompanyService
         _loggerManager = loggerManager;
     }
 
-    public IEnumerable<Company> GetAllCompanies(bool trackChanges)
+    public IEnumerable<CompanyDto> GetAllCompanies(bool trackChanges)
     {
         try
         {
             var companies = _repositoryManager.Company.GetAllCompanies(trackChanges);
-            return companies;
+            return companies.Select(x => new CompanyDto(x.Id,x.Name,$"{x.Country} {x.Address}"));
         }
         catch(Exception ex)
         {
