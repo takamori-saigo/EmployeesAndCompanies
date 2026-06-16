@@ -8,7 +8,7 @@ builder.Services.AddConfigureSqlServer(builder.Configuration.GetConnectionString
 builder.Services.AddConfigureRepositoryManager();
 builder.Services.ConfigureLoggerService();
 builder.Services.AddConfigureServiceManager();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 var app = builder.Build();

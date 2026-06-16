@@ -1,5 +1,8 @@
-﻿namespace Service.Contracts;
+﻿using Entities;
 
-public class ICompanyService
+namespace Service.Contracts;
+
+public interface ICompanyService
 {
+    IEnumerable<Company> GetAllCompanies(bool trackChanges);
 }

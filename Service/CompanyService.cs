@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using Entities;
 using LoggerService;
 using Service.Contracts;
 
@@ -13,5 +14,19 @@ internal sealed class CompanyService : ICompanyService
     {
         _repositoryManager = repository;
         _loggerManager = loggerManager;
+    }
+
+    public IEnumerable<Company> GetAllCompanies(bool trackChanges)
+    {
+        try
+        {
+            var companies = _repositoryManager.Company.GetAllCompanies(trackChanges);
+            return companies;
+        }
+        catch(Exception ex)
+        {
+            _loggerManager.LogError(ex.Message);
+            throw;
+        }
     }
 }
