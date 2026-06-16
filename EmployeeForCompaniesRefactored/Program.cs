@@ -9,6 +9,7 @@ builder.Services.AddConfigureRepositoryManager();
 builder.Services.ConfigureLoggerService();
 builder.Services.AddConfigureServiceManager();
 builder.Services.AddControllers().AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 var app = builder.Build();
