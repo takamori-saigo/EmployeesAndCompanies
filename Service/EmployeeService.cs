@@ -21,10 +21,19 @@ internal sealed class EmployeeService: IEmployeeService
 
     public IEnumerable<EmployeeDto> GetEmployees(Guid companyId, bool trackChanges)
     {
-        var company = _repositoryManager.Company.GetCompany(companyId, trackChanges);
+        var company = _repositoryManager.Company.GetCompany(companyId, false);
         if (company == null) throw new CompanyNotFoundException(companyId);
         var employees = _repositoryManager.Employee.GetEmployees(companyId, trackChanges);
         var employeesDto = _mapper.Map<IEnumerable<EmployeeDto>>(employees);
         return employeesDto;
+    }
+
+    public EmployeeDto GetEmployee(Guid companyId, Guid employeeId, bool trackChanges)
+    {
+        var company = _repositoryManager.Company.GetCompany(companyId, false);
+        if (company == null) throw new CompanyNotFoundException(companyId);
+        var employee = _repositoryManager.Employee.GetEmployee(companyId, employeeId, trackChanges);
+        var employeeDto = _mapper.Map<EmployeeDto>(employee);
+        return employeeDto;
     }
 }

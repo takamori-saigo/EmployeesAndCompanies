@@ -13,4 +13,9 @@ public class EmployeeRepository : RepositoryBase<Employee>, IEmployeeRepository
     {
         return FindByCondition(x => x.CompanyId.Equals(companyId), trackChanges);
     }
+
+    public Employee GetEmployee(Guid companyId, Guid employeeId, bool trackChanges)
+    {
+        return FindByCondition(x => x.Id.Equals(employeeId) && x.CompanyId.Equals(companyId), trackChanges).FirstOrDefault();
+    }
 }
