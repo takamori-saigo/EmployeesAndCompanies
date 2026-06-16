@@ -1,4 +1,5 @@
 using EmployeeForCompaniesRefactored.Extensions;
+using LoggerService;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 
@@ -13,8 +14,10 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 var app = builder.Build();
-if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
-else app.UseHsts();
+var logger = app.Services.GetRequiredService<ILoggerManager>();
+app.ConfigureExceptionHandler(logger);
+if (app.Environment.IsProduction()) 
+    app.UseHsts();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseForwardedHeaders(
