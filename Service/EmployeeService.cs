@@ -33,6 +33,7 @@ internal sealed class EmployeeService: IEmployeeService
         var company = _repositoryManager.Company.GetCompany(companyId, false);
         if (company == null) throw new CompanyNotFoundException(companyId);
         var employee = _repositoryManager.Employee.GetEmployee(companyId, employeeId, trackChanges);
+        if (employee == null) throw new EmployeeNotFoundException(employeeId);
         var employeeDto = _mapper.Map<EmployeeDto>(employee);
         return employeeDto;
     }
