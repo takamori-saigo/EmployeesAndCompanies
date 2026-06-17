@@ -38,4 +38,7 @@ public static class ServiceExtensions
 
     public static void AddConfigureServiceManager(this IServiceCollection services) =>
         services.AddScoped<IServiceManager, ServiceManager>();
+
+    public static IMvcBuilder AddCustomCSFormatter(this IMvcBuilder mvcBuilder) =>
+        mvcBuilder.AddMvcOptions(options => options.OutputFormatters.Add(new CsvOutputFormatter()));
 }

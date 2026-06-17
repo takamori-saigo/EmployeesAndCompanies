@@ -10,10 +10,12 @@ builder.Services.AddConfigureRepositoryManager();
 builder.Services.ConfigureLoggerService();
 builder.Services.AddConfigureServiceManager();
 builder.Services.AddControllers(config =>
-        {
-            config.RespectBrowserAcceptHeader = true;
-        }
-    ).AddXmlSerializerFormatters()
+    {
+        config.RespectBrowserAcceptHeader = true;
+        config.ReturnHttpNotAcceptable = true;
+    }
+).AddXmlSerializerFormatters()
+.AddCustomCSFormatter()
 .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureCors();
