@@ -30,10 +30,11 @@ public class EmployeesController: ControllerBase
 
     [HttpPost]
     public IActionResult CreateEmployeeForCompany(Guid companyId,
-        [FromBody] EmployeeForCrationDto employeeForCrationDto)
+        [FromBody] EmployeeForCreationDto employeeForCreationDto)
     {
-        if (employeeForCrationDto == null) return BadRequest("EmployeeForCrationDto is null");
-        var employee = _serviceManager.EmployeeService.CreateEmployeeForCompany(companyId, employeeForCrationDto);
+        if (employeeForCreationDto == null) return BadRequest("EmployeeForCrationDto is null");
+        if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
+        var employee = _serviceManager.EmployeeService.CreateEmployeeForCompany(companyId, employeeForCreationDto);
         return CreatedAtRoute("GetEmployeeForCompany", new {companyId, employeeId = employee.id}, employee);
     }
 

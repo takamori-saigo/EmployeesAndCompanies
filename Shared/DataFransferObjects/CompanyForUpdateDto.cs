@@ -1,4 +1,4 @@
 namespace Shared;
 
 public record CompanyForUpdateDto(string Name, string Address, string Country,
-    IEnumerable<EmployeeForCrationDto> Employees);
+    IEnumerable<EmployeeForCreationDto> Employees);
