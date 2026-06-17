@@ -1,3 +1,3 @@
 namespace Shared;
 
-public record CompanyForCreatiionDto(string Name, string Address, string Country);
+public record CompanyForCreatiionDto(string Name, string Address, string Country, IEnumerable<EmployeeForCrationDto> Employees);
