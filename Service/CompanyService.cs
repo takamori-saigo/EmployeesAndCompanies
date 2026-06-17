@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities;
+using Entities.Exceptions;
 using LoggerService;
 using Service.Contracts;
 using Shared;
@@ -41,5 +42,26 @@ internal sealed class CompanyService : ICompanyService
         _repositoryManager.SaveChanges();
         var  companyDto = _mapper.Map<CompanyDto>(companyEntity);
         return companyDto;
+    }
+
+    public IEnumerable<CompanyDto> GetByIds(IEnumerable<Guid> companyIds, bool trackChanges)
+    {
+        if (companyIds == null) throw new IdParametersBadRequestException();
+        var companyEntities = _repositoryManager.Company.GetByIds(companyIds, trackChanges);
+        if (companyEntities.Count() != companyIds.Count()) throw new CollectionByIdsRequestException();
+        var companyDtos = _mapper.Map<IEnumerable<CompanyDto>>(companyEntities);
+        return companyDtos;
+    }
+
+    public (IEnumerable<CompanyDto> companies, string ids) CreateCompanyCollection(IEnumerable<CompanyForCreatiionDto> companyCollection)
+    {
+        if (companyCollection is null) throw new CompanyCollectionBadRequest();
+        var companyEntities = _mapper.Map<IEnumerable<Company>>(companyCollection);
+        foreach (var company in companyEntities)
+            _repositoryManager.Company.CreateCompany(company);
+        _repositoryManager.SaveChanges();
+        var companyCollectionToReturn = _mapper.Map<IEnumerable<CompanyDto>>(companyEntities);
+        var ids = string.Join(",", companyCollectionToReturn.Select(x => x.Id));
+        return (companyCollectionToReturn, ids);
     }
 }

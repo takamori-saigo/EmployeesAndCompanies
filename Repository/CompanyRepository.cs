@@ -9,18 +9,18 @@ public class CompanyRepository: RepositoryBase<Company>, ICompanyRepository
     {
     }
 
-    public IEnumerable<Company> GetAllCompanies(bool trackChanges)
-    {
-        return FindAll(trackChanges).OrderBy(x => x.Name).ToList();
-    }
+    public IEnumerable<Company> GetAllCompanies(bool trackChanges) =>
+        FindAll(trackChanges).OrderBy(x => x.Name).ToList();
+    
 
-    public Company GetCompany(Guid companyId, bool trackChanges)
-    {
-        return FindByCondition(x => x.Id.Equals(companyId), trackChanges).FirstOrDefault();
-    }
+    public Company GetCompany(Guid companyId, bool trackChanges) => 
+        FindByCondition(x => x.Id.Equals(companyId), trackChanges).FirstOrDefault();
+    
 
-    public void CreateCompany(Company company)
-    {
+    public void CreateCompany(Company company) => 
         Create(company);
-    }
+    
+
+    public IEnumerable<Company> GetByIds(IEnumerable<Guid> companyIds, bool trackChanges) =>
+        FindByCondition(x => x.Id.Equals(companyIds), trackChanges).ToList();
 }
