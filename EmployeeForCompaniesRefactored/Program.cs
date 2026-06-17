@@ -1,6 +1,7 @@
 using EmployeeForCompaniesRefactored.Extensions;
 using LoggerService;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,10 @@ builder.Services.AddControllers(config =>
 ).AddXmlSerializerFormatters()
 .AddCustomCSFormatter()
 .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();

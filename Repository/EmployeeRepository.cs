@@ -18,4 +18,10 @@ public class EmployeeRepository : RepositoryBase<Employee>, IEmployeeRepository
     {
         return FindByCondition(x => x.Id.Equals(employeeId) && x.CompanyId.Equals(companyId), trackChanges).FirstOrDefault();
     }
+
+    public void CrateEmployeeForCompany(Guid companyId, Employee employee)
+    {
+        employee.CompanyId = companyId;
+        Create(employee);
+    }
 }

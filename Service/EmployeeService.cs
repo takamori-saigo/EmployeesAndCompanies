@@ -1,5 +1,6 @@
 using AutoMapper;
 using Contracts;
+using Entities;
 using Entities.Exceptions;
 using LoggerService;
 using Service.Contracts;
@@ -34,6 +35,17 @@ internal sealed class EmployeeService: IEmployeeService
         if (company == null) throw new CompanyNotFoundException(companyId);
         var employee = _repositoryManager.Employee.GetEmployee(companyId, employeeId, trackChanges);
         if (employee == null) throw new EmployeeNotFoundException(employeeId);
+        var employeeDto = _mapper.Map<EmployeeDto>(employee);
+        return employeeDto;
+    }
+
+    public EmployeeDto CreateEmployeeForCompany(Guid companyId, EmployeeForCrationDto employeeForCrationDto)
+    {
+        var company = _repositoryManager.Company.GetCompany(companyId, false);
+        if (company == null) throw new CompanyNotFoundException(companyId);
+        var employee = _mapper.Map<Employee>(employeeForCrationDto);
+        _repositoryManager.Employee.CrateEmployeeForCompany(companyId, employee);
+        _repositoryManager.SaveChanges();
         var employeeDto = _mapper.Map<EmployeeDto>(employee);
         return employeeDto;
     }

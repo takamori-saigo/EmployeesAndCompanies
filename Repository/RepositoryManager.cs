@@ -20,6 +20,6 @@ public class RepositoryManager: IRepositoryManager
     
     public void SaveChanges()
     {
-        throw new NotImplementedException();
+        _dbContext.SaveChanges();
     }
 }

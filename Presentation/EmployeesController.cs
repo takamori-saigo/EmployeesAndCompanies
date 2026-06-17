@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared;
 
 namespace Presentation;
 
@@ -19,10 +20,19 @@ public class EmployeesController: ControllerBase
         return Ok(employees);
     }
 
-    [HttpGet("{employeeId:guid}")]
+    [HttpGet("{employeeId:guid}", Name = "GetEmployeeForCompany")]
     public IActionResult GetEmployees(Guid companyId, Guid employeeId)
     {
         var employee = _serviceManager.EmployeeService.GetEmployee(companyId, employeeId, false);
         return Ok(employee);
-    } 
+    }
+
+    [HttpPost]
+    public IActionResult CreateEmployeeForCompany(Guid companyId,
+        [FromBody] EmployeeForCrationDto employeeForCrationDto)
+    {
+        if (employeeForCrationDto == null) return BadRequest("EmployeeForCrationDto is null");
+        var employee = _serviceManager.EmployeeService.CreateEmployeeForCompany(companyId, employeeForCrationDto);
+        return CreatedAtRoute("GetEmployeeForCompany", new {companyId, employeeId = employee.id}, employee);
+    }
 }
