@@ -31,7 +31,7 @@ public class CsvOutputFormatter: TextOutputFormatter
     {
         var response = context.HttpContext.Response;
         var buffer = new StringBuilder();
-        if (context.Object is IEnumerable<Company> companies)
+        if (context.Object is IEnumerable<CompanyDto> companies)
         {
             foreach (var company in (IEnumerable<CompanyDto>)context.Object)
             {
@@ -44,6 +44,6 @@ public class CsvOutputFormatter: TextOutputFormatter
 
     private static void FormatCsv(StringBuilder buffer, CompanyDto company)
     {
-        buffer.AppendLine($"{company.Id},\" {company.Name},\" {company.FullAddress}");
+        buffer.AppendLine($"{company.Id}, {company.Name}, {company.FullAddress}");
     }
 }

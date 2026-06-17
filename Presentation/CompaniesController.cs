@@ -1,6 +1,7 @@
 using Entities.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared;
 
 namespace Presentation;
 
@@ -22,12 +23,20 @@ public class CompaniesController: ControllerBase
         return Ok(companies);
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id:guid}", Name = "GetCompany")]
     public IActionResult GetCompany(Guid id)
     {
         var company = _serviceManager.CompanyService.GetCompany(id, false);
         if (company == null) 
             throw new CompanyNotFoundException(id);
         return Ok(company);
+    }
+
+    [HttpPost]
+    public IActionResult CreateCompany([FromBody] CompanyForCreatiionDto companyDto)
+    {
+        if (companyDto == null) return BadRequest("CompanyForCreationDto is null");
+        var company = _serviceManager.CompanyService.CreateCompany(companyDto);
+        return CreatedAtRoute("GetCompany", new { id = company.Id }, company);
     }
 }
