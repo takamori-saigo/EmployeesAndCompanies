@@ -49,4 +49,14 @@ internal sealed class EmployeeService: IEmployeeService
         var employeeDto = _mapper.Map<EmployeeDto>(employee);
         return employeeDto;
     }
+
+    public void DeleteEmployee(Guid companyId, Guid id, bool trackChanges)
+    {
+        var company =  _repositoryManager.Company.GetCompany(companyId, false);
+        if (company == null) throw new CompanyNotFoundException(companyId);
+        var employeeForCompany = _repositoryManager.Employee.GetEmployee(companyId, id, trackChanges);
+        if (employeeForCompany == null) throw new EmployeeNotFoundException(id);
+        _repositoryManager.Employee.DeleteEmployee(employeeForCompany);
+        _repositoryManager.SaveChanges();
+    }
 }

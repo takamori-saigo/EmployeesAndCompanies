@@ -8,4 +8,5 @@ public interface IEmployeeService
     IEnumerable<EmployeeDto> GetEmployees(Guid companyId, bool trackChanges);
     EmployeeDto GetEmployee(Guid companyId, Guid employeeId, bool trackChanges);
     EmployeeDto CreateEmployeeForCompany(Guid companyId, EmployeeForCrationDto employeeForCrationDto);
+    void DeleteEmployee(Guid companyId, Guid id, bool trackChanges);
 }
