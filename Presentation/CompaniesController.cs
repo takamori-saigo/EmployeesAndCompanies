@@ -62,4 +62,13 @@ public class CompaniesController: ControllerBase
         _serviceManager.CompanyService.DeleteCompany(companyId);
         return NoContent();
     }
+
+    [HttpPut("{companyId:guid}")]
+    public IActionResult UpdateCompany(Guid companyId,[FromBody]CompanyForUpdateDto companyForUpdateDto)
+    {
+        if (companyForUpdateDto is null)
+            return BadRequest("CompanyForUpdateDto object is null");
+        _serviceManager.CompanyService.UpdateCompany(companyId, companyForUpdateDto, true);
+        return NoContent();
+    }
 }
