@@ -42,4 +42,12 @@ public class EmployeesController: ControllerBase
         _serviceManager.EmployeeService.DeleteEmployee(companyId, employeeId, false);
         return NoContent();
     }
+
+    [HttpPut("{employeeId:guid}")]
+    public IActionResult UpdateEmployee(Guid companyId, Guid employeeId, [FromBody]EmployeeForUpdateDto employeeForUpdateDto)
+    {
+        if (employeeForUpdateDto == null) return BadRequest("employeeForUpdateDto is null");
+        _serviceManager.EmployeeService.UpdateEmployee(companyId, employeeId, employeeForUpdateDto, false, true);
+        return NoContent();
+    }
 }
