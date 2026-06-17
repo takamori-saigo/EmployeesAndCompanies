@@ -1,5 +1,7 @@
 using Entities.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Presentation.ModelBinders;
 using Service.Contracts;
 using Shared;
 
@@ -41,7 +43,7 @@ public class CompaniesController: ControllerBase
     }
     
     [HttpGet("Collection/({companyIds})", Name = "GetCompanyCollection")]
-    public IActionResult GetCompanyCollection(IEnumerable<Guid> companyIds)
+    public IActionResult GetCompanyCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))]IEnumerable<Guid> companyIds)
     {
         var companies = _serviceManager.CompanyService.GetByIds(companyIds, false);
         return Ok(companies);

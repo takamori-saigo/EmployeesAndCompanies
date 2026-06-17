@@ -22,5 +22,5 @@ public class CompanyRepository: RepositoryBase<Company>, ICompanyRepository
     
 
     public IEnumerable<Company> GetByIds(IEnumerable<Guid> companyIds, bool trackChanges) =>
-        FindByCondition(x => x.Id.Equals(companyIds), trackChanges).ToList();
+        FindByCondition(x => companyIds.Contains(x.Id), trackChanges).ToList();
 }
