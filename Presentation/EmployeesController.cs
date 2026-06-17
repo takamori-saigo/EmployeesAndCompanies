@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared;
@@ -48,6 +49,17 @@ public class EmployeesController: ControllerBase
     {
         if (employeeForUpdateDto == null) return BadRequest("employeeForUpdateDto is null");
         _serviceManager.EmployeeService.UpdateEmployee(companyId, employeeId, employeeForUpdateDto, false, true);
+        return NoContent();
+    }
+    
+    [HttpPatch("{employeeId:guid}")]
+    public IActionResult PartiallyUpdateEmployeeForCompany(Guid companyId, Guid employeeId,
+        [FromBody]JsonPatchDocument<EmployeeForUpdateDto> patchDoc)
+    {
+        if (patchDoc == null) return BadRequest("patchDoc is null");
+        var result = _serviceManager.EmployeeService.GetEmployeeForPatch(companyId, employeeId, false, true);
+        patchDoc.ApplyTo(result.employeeToPatch);
+        _serviceManager.EmployeeService.SaveChangesForPatch(result.employeeToPatch,result.employeeEntity);
         return NoContent();
     }
 }
