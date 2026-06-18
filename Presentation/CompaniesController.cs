@@ -1,6 +1,6 @@
 using Entities.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Presentation.ActionFilters;
 using Presentation.ModelBinders;
 using Service.Contracts;
 using Shared;
@@ -35,9 +35,9 @@ public class CompaniesController: ControllerBase
     }
 
     [HttpPost]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateCompany([FromBody] CompanyForCreatiionDto companyDto)
     {
-        if (companyDto == null) return BadRequest("CompanyForCreationDto is null");
         var company = await _serviceManager.CompanyService.CreateCompanyAsync(companyDto);
         return CreatedAtRoute("GetCompany", new { id = company.Id }, company);
     }
@@ -50,6 +50,7 @@ public class CompaniesController: ControllerBase
     }
 
     [HttpPost("Collection")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateCompanyCollection([FromBody] IEnumerable<CompanyForCreatiionDto> companyDtos)
     {
         var result = await _serviceManager.CompanyService.CreateCompanyCollectionAsync(companyDtos);
@@ -64,10 +65,9 @@ public class CompaniesController: ControllerBase
     }
 
     [HttpPut("{companyId:guid}")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateCompany(Guid companyId,[FromBody]CompanyForUpdateDto companyForUpdateDto)
     {
-        if (companyForUpdateDto is null)
-            return BadRequest("CompanyForUpdateDto object is null");
         await _serviceManager.CompanyService.UpdateCompanyAsync(companyId, companyForUpdateDto, true);
         return NoContent();
     }
