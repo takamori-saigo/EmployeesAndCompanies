@@ -1,9 +1,11 @@
+using System.Text.Json;
 using Entities.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
 using Presentation.ModelBinders;
 using Service.Contracts;
 using Shared;
+using Shared.RequestParameters;
 
 namespace Presentation;
 
@@ -19,10 +21,11 @@ public class CompaniesController: ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetAllCompanies()
+    public async Task<IActionResult> GetAllCompanies([FromQuery]CompanyParameters companyParameters)
     {
-        var companies = await _serviceManager.CompanyService.GetAllCompaniesAsync(false);
-        return Ok(companies);
+        var companies = await _serviceManager.CompanyService.GetAllCompaniesAsync(companyParameters, false);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(companies.metaData));
+        return Ok(companies.Item1);
     }
 
     [HttpGet("{id:guid}", Name = "GetCompany")]
