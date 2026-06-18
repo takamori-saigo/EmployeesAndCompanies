@@ -15,52 +15,52 @@ public class EmployeesController: ControllerBase
         _serviceManager = serviceManager;
 
     [HttpGet]
-    public IActionResult GetEmployees(Guid companyId)
+    public async Task<IActionResult> GetEmployees(Guid companyId)
     {
-        var employees = _serviceManager.EmployeeService.GetEmployees(companyId, false);
+        var employees = await _serviceManager.EmployeeService.GetEmployeesAsync(companyId, false);
         return Ok(employees);
     }
 
     [HttpGet("{employeeId:guid}", Name = "GetEmployeeForCompany")]
-    public IActionResult GetEmployees(Guid companyId, Guid employeeId)
+    public async Task<IActionResult> GetEmployees(Guid companyId, Guid employeeId)
     {
-        var employee = _serviceManager.EmployeeService.GetEmployee(companyId, employeeId, false);
+        var employee = await _serviceManager.EmployeeService.GetEmployeeAsync(companyId, employeeId, false);
         return Ok(employee);
     }
 
     [HttpPost]
-    public IActionResult CreateEmployeeForCompany(Guid companyId,
+    public async Task<IActionResult> CreateEmployeeForCompany(Guid companyId,
         [FromBody] EmployeeForCreationDto employeeForCreationDto)
     {
         if (employeeForCreationDto == null) return BadRequest("EmployeeForCrationDto is null");
         if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
-        var employee = _serviceManager.EmployeeService.CreateEmployeeForCompany(companyId, employeeForCreationDto);
+        var employee = await _serviceManager.EmployeeService.CreateEmployeeForCompanyAsync(companyId, employeeForCreationDto);
         return CreatedAtRoute("GetEmployeeForCompany", new {companyId, employeeId = employee.id}, employee);
     }
 
     [HttpDelete("{employeeId:guid}")]
-    public IActionResult DeleteEmployee(Guid companyId, Guid employeeId)
+    public async Task<IActionResult> DeleteEmployee(Guid companyId, Guid employeeId)
     {
-        _serviceManager.EmployeeService.DeleteEmployee(companyId, employeeId, false);
+        _serviceManager.EmployeeService.DeleteEmployeeAsync(companyId, employeeId, false);
         return NoContent();
     }
 
     [HttpPut("{employeeId:guid}")]
-    public IActionResult UpdateEmployee(Guid companyId, Guid employeeId, [FromBody]EmployeeForUpdateDto employeeForUpdateDto)
+    public async Task<IActionResult> UpdateEmployee(Guid companyId, Guid employeeId, [FromBody]EmployeeForUpdateDto employeeForUpdateDto)
     {
         if (employeeForUpdateDto == null) return BadRequest("employeeForUpdateDto is null");
-        _serviceManager.EmployeeService.UpdateEmployee(companyId, employeeId, employeeForUpdateDto, false, true);
+        await _serviceManager.EmployeeService.UpdateEmployeeAsync(companyId, employeeId, employeeForUpdateDto, false, true);
         return NoContent();
     }
     
     [HttpPatch("{employeeId:guid}")]
-    public IActionResult PartiallyUpdateEmployeeForCompany(Guid companyId, Guid employeeId,
+    public async Task<IActionResult> PartiallyUpdateEmployeeForCompany(Guid companyId, Guid employeeId,
         [FromBody]JsonPatchDocument<EmployeeForUpdateDto> patchDoc)
     {
         if (patchDoc == null) return BadRequest("patchDoc is null");
-        var result = _serviceManager.EmployeeService.GetEmployeeForPatch(companyId, employeeId, false, true);
+        var result = await _serviceManager.EmployeeService.GetEmployeeForPatchAsync(companyId, employeeId, false, true);
         patchDoc.ApplyTo(result.employeeToPatch);
-        _serviceManager.EmployeeService.SaveChangesForPatch(result.employeeToPatch,result.employeeEntity);
+        await _serviceManager.EmployeeService.SaveChangesForPatchAsync(result.employeeToPatch,result.employeeEntity);
         return NoContent();
     }
 }

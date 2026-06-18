@@ -18,8 +18,8 @@ public class RepositoryManager: IRepositoryManager
         _employeeRepository = new Lazy<IEmployeeRepository>(() => new EmployeeRepository(dbContext));
     }
     
-    public void SaveChanges()
+    public async Task SaveAsync()
     {
-        _dbContext.SaveChanges();
+        _dbContext.SaveChangesAsync();
     }
 }
