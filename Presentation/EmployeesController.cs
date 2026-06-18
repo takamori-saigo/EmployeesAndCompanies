@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
@@ -16,10 +17,11 @@ public class EmployeesController: ControllerBase
         _serviceManager = serviceManager;
 
     [HttpGet]
-    public async Task<IActionResult> GetEmployees(Guid companyId, [FromQuery] EmployeeParameters parameters, bool trackChanges)
+    public async Task<IActionResult> GetEmployees(Guid companyId, [FromQuery] EmployeeParameters parameters)
     {
-        var employees = await _serviceManager.EmployeeService.GetEmployeesAsync(companyId, parameters, trackChanges);
-        return Ok(employees);
+        var employees = await _serviceManager.EmployeeService.GetEmployeesAsync(companyId, parameters, false);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(employees.metaData));
+        return Ok(employees.Item1);
     }
 
     [HttpGet("{employeeId:guid}", Name = "GetEmployeeForCompany")]
