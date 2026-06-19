@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Repository;
 using Service;
 using Service.Contracts;
+using Service.DataShaping;
+using Shared;
 
 namespace EmployeeForCompaniesRefactored.Extensions;
 
@@ -41,4 +43,7 @@ public static class ServiceExtensions
 
     public static IMvcBuilder AddCustomCSFormatter(this IMvcBuilder mvcBuilder) =>
         mvcBuilder.AddMvcOptions(options => options.OutputFormatters.Add(new CsvOutputFormatter()));
+
+    public static void AddConfigureDataShape(this IServiceCollection services) =>
+        services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
 }

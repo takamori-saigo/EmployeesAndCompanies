@@ -1,3 +1,4 @@
+using System.Dynamic;
 using AutoMapper;
 using Contracts;
 using Entities;
@@ -14,20 +15,23 @@ internal sealed class EmployeeService: IEmployeeService
     private readonly ILoggerManager _loggerManager;
     private readonly IRepositoryManager _repositoryManager;
     private readonly IMapper _mapper;
-    public EmployeeService(IRepositoryManager repositoryManager, ILoggerManager loggerManager, IMapper mapper)
+    private readonly IDataShaper<EmployeeDto> _dataShaper;
+    public EmployeeService(IRepositoryManager repositoryManager, ILoggerManager loggerManager, IMapper mapper, IDataShaper<EmployeeDto> dataShaper)
     {
         _loggerManager = loggerManager;
         _repositoryManager = repositoryManager;
         _mapper = mapper;
+        _dataShaper =  dataShaper;
     }
 
-    public async Task<(IEnumerable<EmployeeDto>, MetaData metaData)> GetEmployeesAsync(Guid companyId, EmployeeParameters parameters, bool trackChanges)
+    public async Task<(IEnumerable<ExpandoObject>, MetaData metaData)> GetEmployeesAsync(Guid companyId, EmployeeParameters parameters, bool trackChanges)
     {
         if (!parameters.ValidAgeRange) throw new MaxAgeRangeBadRequestException();
         await CheckIfCompanyExists(companyId, trackChanges);
         var employees = await _repositoryManager.Employee.GetEmployeesAsync(companyId, parameters, trackChanges);
         var employeesDto = _mapper.Map<IEnumerable<EmployeeDto>>(employees);
-        return (employeesDto, employees.MetaData);
+        var shapedData = _dataShaper.ShapeData(employeesDto, parameters.Fields);
+        return (shapedData, employees.MetaData);
     }
 
     public async Task<EmployeeDto> GetEmployeeAsync(Guid companyId, Guid employeeId, bool trackChanges)

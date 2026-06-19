@@ -20,6 +20,7 @@ builder.Services.AddConfigureSqlServer(builder.Configuration.GetConnectionString
 builder.Services.AddConfigureRepositoryManager();
 builder.Services.ConfigureLoggerService();
 builder.Services.AddConfigureServiceManager();
+builder.Services.AddConfigureDataShape();
 builder.Services.AddScoped<ValidationFilterAttribute>();
 builder.Services.AddControllers(config =>
     {
