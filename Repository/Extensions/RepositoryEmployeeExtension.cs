@@ -24,29 +24,7 @@ public static class RepositoryEmployeeExtension
         //проверка является ли orderByQueryString пустотой
         if (string.IsNullOrWhiteSpace(orderByQueryString))
             return employees.OrderBy(x => x.Name);
-
-        //разделение на ascenting и descending
-        var orderParams = orderByQueryString.Trim().Split(',');
-        //рефлексия - получение публичных свойств и тех которые доступны после создания
-        var propertyInfos = typeof(Employee).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-        var orderQueryBuilder = new StringBuilder();
-
-        //перебираем все параметры сортировки
-        foreach (var param in orderParams)
-        {
-            if (string.IsNullOrEmpty(param)) 
-                continue;
-            
-            
-            var propertyFromQueryName = param.Split(' ')[0];
-            var objectProperty = propertyInfos.FirstOrDefault(pi => pi.Name.Equals(propertyFromQueryName,
-                StringComparison.InvariantCultureIgnoreCase));
-            if (objectProperty == null) continue;
-            var direction = param.EndsWith(" desc") ? "descending" :  "ascending";
-            orderQueryBuilder.Append($"{objectProperty.Name.ToString()} {direction},");
-        }
-
-        var oderQuery = orderQueryBuilder.ToString().TrimEnd(',',' ');
+        var oderQuery = OrderQueryBuilder.CreateOrderQuery<Employee>(orderByQueryString);
         if (string.IsNullOrWhiteSpace(oderQuery))
             return employees.OrderBy(e => e.Name);
         return employees.OrderBy(oderQuery);
