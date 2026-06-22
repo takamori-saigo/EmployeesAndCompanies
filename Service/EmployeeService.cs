@@ -23,7 +23,7 @@ internal sealed class EmployeeService: IEmployeeService
         _dataShaper =  dataShaper;
     }
 
-    public async Task<(IEnumerable<ExpandoObject>, MetaData metaData)> GetEmployeesAsync(Guid companyId, EmployeeParameters parameters, bool trackChanges)
+    public async Task<(IEnumerable<Entity>, MetaData metaData)> GetEmployeesAsync(Guid companyId, EmployeeParameters parameters, bool trackChanges)
     {
         if (!parameters.ValidAgeRange) throw new MaxAgeRangeBadRequestException();
         await CheckIfCompanyExists(companyId, trackChanges);

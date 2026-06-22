@@ -1,6 +1,7 @@
 using System.Dynamic;
 using System.Reflection;
 using Contracts;
+using Entities;
 
 namespace Service.DataShaping;
 
@@ -13,13 +14,13 @@ public class DataShaper<T>: IDataShaper<T> where T : class
         Properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);    
     }
     
-    public IEnumerable<ExpandoObject> ShapeData(IEnumerable<T> entities, string fieldString)
+    public IEnumerable<Entity> ShapeData(IEnumerable<T> entities, string fieldString)
     {
         var requiredProperties = GetRequiredProperties(fieldString);
         return FetchData(entities, requiredProperties);
     }
 
-    public ExpandoObject ShapeData(T entity, string fieldString)
+    public Entity ShapeData(T entity, string fieldString)
     {
         var requiredProperties = GetRequiredProperties(fieldString);
         return FetchDataForEntity(entity, requiredProperties);
@@ -46,9 +47,9 @@ public class DataShaper<T>: IDataShaper<T> where T : class
         return requiredProperties;
     }
 
-    private IEnumerable<ExpandoObject> FetchData(IEnumerable<T> entities, IEnumerable<PropertyInfo> requiredProperties)
+    private IEnumerable<Entity> FetchData(IEnumerable<T> entities, IEnumerable<PropertyInfo> requiredProperties)
     {
-        var shapeData = new List<ExpandoObject>();
+        var shapeData = new List<Entity>();
         foreach (var e in entities)
         {
             var shapedObject = FetchDataForEntity(e, requiredProperties);
@@ -57,9 +58,9 @@ public class DataShaper<T>: IDataShaper<T> where T : class
         return shapeData;
     }
 
-    private ExpandoObject FetchDataForEntity(T entity, IEnumerable<PropertyInfo> requiredProperties)
+    private Entity FetchDataForEntity(T entity, IEnumerable<PropertyInfo> requiredProperties)
     {
-        var shapedObject = new ExpandoObject();
+        var shapedObject = new Entity();
         foreach (var p in requiredProperties)
         {
             var objectPropertyValue = p.GetValue(entity);
