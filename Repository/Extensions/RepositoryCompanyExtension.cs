@@ -6,6 +6,6 @@ public static class RepositoryCompanyExtension
 {
     public static IQueryable<Company> Search(this IQueryable<Company> query, string searchString)
     {
-        return query.Where(company => company.Name.Contains(searchString));
+        return string.IsNullOrWhiteSpace(searchString) ? query : query.Where(company => company.Name.Contains(searchString));
     }
 }

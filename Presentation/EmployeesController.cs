@@ -23,6 +23,14 @@ public class EmployeesController: ControllerBase
         Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(employees.metaData));
         return Ok(employees.Item1);
     }
+    
+    [HttpHead]
+    public async Task<IActionResult> GetEmployeesHead(Guid companyId, [FromQuery] EmployeeParameters parameters)
+    {
+        var employees = await _serviceManager.EmployeeService.GetEmployeesAsync(companyId, parameters, false);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(employees.metaData));
+        return Ok();
+    }
 
     [HttpGet("{employeeId:guid}", Name = "GetEmployeeForCompany")]
     public async Task<IActionResult> GetEmployees(Guid companyId, Guid employeeId)
