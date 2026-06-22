@@ -1,5 +1,7 @@
 using Contracts;
 using LoggerService;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Repository;
 using Service;
@@ -46,4 +48,15 @@ public static class ServiceExtensions
 
     public static void AddConfigureDataShape(this IServiceCollection services) =>
         services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
+
+    public static void ConfigureVersioning(this IServiceCollection services)
+    {
+        services.AddApiVersioning(opt =>
+        {
+            opt.ReportApiVersions = true; //сообщает пользователю версию
+            opt.AssumeDefaultVersionWhenUnspecified = true; //сервер сам подскажет версию по умолчанию
+            opt.DefaultApiVersion = new ApiVersion(1, 0); //версия по умолчанию
+            opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
+        });
+    }
 }

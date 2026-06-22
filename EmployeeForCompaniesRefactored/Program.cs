@@ -38,6 +38,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
+builder.Services.ConfigureVersioning();
 var app = builder.Build();
 var logger = app.Services.GetRequiredService<ILoggerManager>();
 app.ConfigureExceptionHandler(logger);

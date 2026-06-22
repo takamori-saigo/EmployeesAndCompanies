@@ -9,8 +9,9 @@ using Shared.RequestParameters;
 
 namespace Presentation;
 
-[Route("api/[controller]")]
+[Route("api/Companies")]
 [ApiController]
+[ApiVersion("1.0")]
 public class CompaniesController: ControllerBase
 {
     private readonly IServiceManager _serviceManager;
