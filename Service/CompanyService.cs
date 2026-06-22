@@ -2,7 +2,6 @@
 using Contracts;
 using Entities;
 using Entities.Exceptions;
-using LoggerService;
 using Service.Contracts;
 using Shared;
 using Shared.RequestParameters;

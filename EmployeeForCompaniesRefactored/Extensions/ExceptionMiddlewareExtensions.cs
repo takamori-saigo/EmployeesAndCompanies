@@ -1,7 +1,6 @@
-using System.Net;
+using Contracts;
 using Entities.ErrorDetails;
 using Entities.Exceptions;
-using LoggerService;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace EmployeeForCompaniesRefactored.Extensions;

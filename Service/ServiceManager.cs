@@ -1,6 +1,5 @@
 using AutoMapper;
 using Contracts;
-using LoggerService;
 using Service.Contracts;
 using Shared;
 

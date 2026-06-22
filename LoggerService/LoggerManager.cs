@@ -1,9 +1,34 @@
-﻿namespace LoggerService;
+﻿using Contracts;
+using NLog;
 
-public interface ILoggerManager
+namespace LoggerService;
+
+public class LoggerManager: ILoggerManager
 {
-    void LogInfo(string message);
-    void LogWarning(string message);
-    void LogError(string message);
-    void LogDebug(string message);
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+    public LoggerManager()
+    {
+        
+    }
+    
+    public void LogInfo(string message)
+    {
+        _logger.Info(message);
+    }
+
+    public void LogWarning(string message)
+    {
+        _logger.Warn(message);
+    }
+
+    public void LogError(string message)
+    {
+        _logger.Error(message);
+    }
+
+    public void LogDebug(string message)
+    {
+        _logger.Debug(message);
+    }
 }
