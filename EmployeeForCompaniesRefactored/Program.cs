@@ -22,6 +22,8 @@ builder.Services.ConfigureVersioning();
 builder.Services.AddScoped<ValidateMediaTypeAttribute>();
 builder.Services.AddScoped<ValidationFilterAttribute>();
 builder.Services.ConfigureResponseCaching();
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
 
 builder.Services.AddControllers(config =>
     {
@@ -59,6 +61,7 @@ app.UseForwardedHeaders(
         ForwardedHeaders = ForwardedHeaders.All
     }
 );
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
