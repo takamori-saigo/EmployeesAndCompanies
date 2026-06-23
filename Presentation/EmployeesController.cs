@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.ActionFilters;
 using Service.Contracts;
 using Shared;
 using Shared.RequestParameters;
@@ -17,6 +18,7 @@ public class EmployeesController: ControllerBase
         _serviceManager = serviceManager;
 
     [HttpGet]
+    [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
     public async Task<IActionResult> GetEmployees(Guid companyId, [FromQuery] EmployeeParameters parameters)
     {
         var employees = await _serviceManager.EmployeeService.GetEmployeesAsync(companyId, parameters, false);

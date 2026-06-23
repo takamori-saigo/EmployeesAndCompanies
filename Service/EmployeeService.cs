@@ -29,7 +29,7 @@ internal sealed class EmployeeService: IEmployeeService
         await CheckIfCompanyExists(companyId, trackChanges);
         var employees = await _repositoryManager.Employee.GetEmployeesAsync(companyId, parameters, trackChanges);
         var employeesDto = _mapper.Map<IEnumerable<EmployeeDto>>(employees);
-        var shapedData = _dataShaper.ShapeData(employeesDto, parameters.Fields);
+        var shapedData = _dataShaper.ShapeData(employeesDto, parameters.Fields).Select(x => x.Entity);
         return (shapedData, employees.MetaData);
     }
 

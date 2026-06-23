@@ -11,6 +11,7 @@ namespace Presentation;
 
 [Route("api/Companies")]
 [ApiController]
+[ResponseCache(Duration = 60)]
 [ApiVersion("1.0")]
 public class CompaniesController: ControllerBase
 {

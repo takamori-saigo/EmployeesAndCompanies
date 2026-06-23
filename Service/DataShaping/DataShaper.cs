@@ -14,13 +14,13 @@ public class DataShaper<T>: IDataShaper<T> where T : class
         Properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);    
     }
     
-    public IEnumerable<Entity> ShapeData(IEnumerable<T> entities, string fieldString)
+    public IEnumerable<ShapedEntity> ShapeData(IEnumerable<T> entities, string fieldString)
     {
         var requiredProperties = GetRequiredProperties(fieldString);
         return FetchData(entities, requiredProperties);
     }
 
-    public Entity ShapeData(T entity, string fieldString)
+    public ShapedEntity ShapeData(T entity, string fieldString)
     {
         var requiredProperties = GetRequiredProperties(fieldString);
         return FetchDataForEntity(entity, requiredProperties);
@@ -47,9 +47,9 @@ public class DataShaper<T>: IDataShaper<T> where T : class
         return requiredProperties;
     }
 
-    private IEnumerable<Entity> FetchData(IEnumerable<T> entities, IEnumerable<PropertyInfo> requiredProperties)
+    private IEnumerable<ShapedEntity> FetchData(IEnumerable<T> entities, IEnumerable<PropertyInfo> requiredProperties)
     {
-        var shapeData = new List<Entity>();
+        var shapeData = new List<ShapedEntity>();
         foreach (var e in entities)
         {
             var shapedObject = FetchDataForEntity(e, requiredProperties);
@@ -58,14 +58,17 @@ public class DataShaper<T>: IDataShaper<T> where T : class
         return shapeData;
     }
 
-    private Entity FetchDataForEntity(T entity, IEnumerable<PropertyInfo> requiredProperties)
+    private ShapedEntity FetchDataForEntity(T entity, IEnumerable<PropertyInfo> requiredProperties)
     {
-        var shapedObject = new Entity();
+        var shapedObject = new ShapedEntity();
         foreach (var p in requiredProperties)
         {
             var objectPropertyValue = p.GetValue(entity);
-            shapedObject.TryAdd(p.Name, objectPropertyValue);
+            shapedObject.Entity.Add(p.Name, objectPropertyValue);
         }
+
+        var objectProperty = entity.GetType().GetProperty("Id");
+        shapedObject.Id = (Guid)objectProperty!.GetValue(entity);
         return shapedObject;
     }
 }

@@ -1,6 +1,7 @@
 using Contracts;
 using LoggerService;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Repository;
@@ -30,6 +31,9 @@ public static class ServiceExtensions
             
         });
 
+    public static void ConfigureResponseCaching(this IServiceCollection services) =>
+        services.AddResponseCaching();
+    
     public static void ConfigureLoggerService(this IServiceCollection services) =>
         services.AddSingleton<ILoggerManager, LoggerManager>();
     
@@ -57,6 +61,31 @@ public static class ServiceExtensions
             opt.AssumeDefaultVersionWhenUnspecified = true; //сервер сам подскажет версию по умолчанию
             opt.DefaultApiVersion = new ApiVersion(1, 0); //версия по умолчанию
             opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
+        });
+    }
+    
+    public static void AddCustomMediaType(this IServiceCollection services)
+    {
+        services.Configure<MvcOptions>(config =>
+        {
+            var systemTextJsonOutputFormatter = config.OutputFormatters
+                .OfType<SystemTextJsonOutputFormatter>()?.FirstOrDefault();
+
+            if (systemTextJsonOutputFormatter != null)
+            {
+                systemTextJsonOutputFormatter.SupportedMediaTypes
+                    .Add("application/vnd.codemaze.hateoas+json");
+            }
+            
+            var xmlOutputFormatter = config.OutputFormatters
+                .OfType<XmlDataContractSerializerOutputFormatter>()?
+                .FirstOrDefault();
+
+            if (xmlOutputFormatter != null)
+            {
+                xmlOutputFormatter.SupportedMediaTypes
+                    .Add("application/vnd.codemaze.hateoas+xml");
+            }
         });
     }
 }

@@ -19,8 +19,9 @@ builder.Services.AddConfigureDataShape();
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 builder.Services.ConfigureVersioning();
-
+builder.Services.AddScoped<ValidateMediaTypeAttribute>();
 builder.Services.AddScoped<ValidationFilterAttribute>();
+builder.Services.ConfigureResponseCaching();
 
 builder.Services.AddControllers(config =>
     {
@@ -47,6 +48,10 @@ if (app.Environment.IsProduction())
     app.UseHsts();
 
 app.UseHttpsRedirection();
+
+app.UseCors("CorsPolicy");
+app.UseResponseCaching();
+
 app.UseStaticFiles();
 app.UseForwardedHeaders(
     new ForwardedHeadersOptions
