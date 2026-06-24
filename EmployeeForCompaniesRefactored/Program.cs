@@ -7,7 +7,6 @@ using NLog;
 using Presentation.ActionFilters;
 
 var builder = WebApplication.CreateBuilder(args);
-
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
 builder.Services.AddConfigureSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -24,6 +23,7 @@ builder.Services.AddScoped<ValidationFilterAttribute>();
 builder.Services.ConfigureResponseCaching();
 builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
+builder.Services.ConfigureJWT(builder.Configuration);
 
 builder.Services.AddControllers(config =>
     {

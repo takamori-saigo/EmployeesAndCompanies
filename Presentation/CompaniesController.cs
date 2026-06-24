@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Entities.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
 using Presentation.ModelBinders;
@@ -12,6 +13,7 @@ namespace Presentation;
 [Route("api/Companies")]
 [ApiController]
 [ResponseCache(Duration = 60)]
+[Authorize]
 [ApiVersion("1.0")]
 public class CompaniesController: ControllerBase
 {
